@@ -1,7 +1,7 @@
 class Todo {
-  int id;
-  String todo;
-  bool completed;
+  final int id;
+  final String todo;
+  final bool completed;
 
   Todo({this.id, this.todo, this.completed});
 
