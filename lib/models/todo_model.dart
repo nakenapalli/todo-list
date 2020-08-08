@@ -12,4 +12,12 @@ class Todo {
       completed: json['completed'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'todo': todo,
+      'completed': completed,
+    };
+  }
 }

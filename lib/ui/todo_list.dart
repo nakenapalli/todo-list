@@ -46,16 +46,51 @@ class _TodoListState extends State<TodoList> {
     }
   }
 
-  Widget buildTodoItem(int index) {
-    return ListTile(
-      leading: Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Text(todoList[index].id.toString()),
+  Widget buildTodoItem(int index, List<Todo> todos) {
+    return Card(
+      margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: Colors.indigoAccent),
+        borderRadius: BorderRadius.circular(5),
       ),
-      title: Text(todoList[index].todo),
-      subtitle: isCompleted(todoList[index].completed),
-      onTap: () {},
+      child: ListTile(
+        leading: Padding(
+          padding: EdgeInsets.only(top: 12, left: 5),
+          child: Text(
+            todos[index].id.toString(),
+            style: TextStyle(
+              color: Colors.indigoAccent,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        title: Text(todos[index].todo),
+        subtitle: isCompleted(todos[index].completed),
+        trailing: IconButton(
+          icon: Icon(
+            MdiIcons.checkBold,
+            color: Colors.indigoAccent,
+          ),
+          onPressed: () => setState(() {
+            api.markTodo(todos[index]);
+          }),
+        ),
+      ),
     );
+  }
+
+  List<Widget> createTodoList() {
+    List<Todo> currentList;
+
+    if (completed) {
+      currentList = todoList.where((todo) => todo.completed).toList();
+    } else {
+      currentList = todoList.where((todo) => !(todo.completed)).toList();
+    }
+
+    return List.generate(
+        currentList.length, (index) => buildTodoItem(index, currentList));
   }
 
   @override
@@ -63,46 +98,27 @@ class _TodoListState extends State<TodoList> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(MdiIcons.clipboardListOutline, color: Colors.white),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text("Todo List"),
-            FlatButton(
-                padding: EdgeInsets.only(left: 50),
-                onPressed: () => {
-                      setState(() {
-                        completed = !completed;
-                      })
-                    },
-                child: completed
-                    ? Icon(
-                        MdiIcons.checkboxMarked,
-                        color: Colors.white,
-                      )
-                    : Icon(
-                        MdiIcons.checkBoxOutline,
-                        color: Colors.white,
-                      )),
-          ],
-        ),
+        title: Text("Todo List"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              completed ? MdiIcons.checkboxMarked : MdiIcons.checkBoxOutline,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () => {
+              setState(() {
+                completed = !completed;
+              })
+            },
+            splashColor: Colors.indigo[300],
+          ),
+          SizedBox(width: 10),
+        ],
       ),
-      body: ListView.builder(
-        itemCount: todoList.length,
-        itemBuilder: (context, index) {
-          if (completed) {
-            if (todoList[index].completed) {
-              return buildTodoItem(index);
-            } else {
-              return null;
-            }
-          } else {
-            if (todoList[index].completed) {
-              return null;
-            } else {
-              return buildTodoItem(index);
-            }
-          }
-        },
+      body: ListView(
+        padding: EdgeInsets.all(5),
+        children: createTodoList(),
       ),
     );
   }
