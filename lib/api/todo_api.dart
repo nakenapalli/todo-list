@@ -22,19 +22,27 @@ Future markTodo(Todo todo) async {
     completed: !todo.completed,
   );
 
-  final response = await http.put(
+  final response = await http.post(
     'http://117.193.68.204:8000/change/todo/123456',
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
       "Accept": "application/json",
     },
-    body: json.encode(updatedTodo.toMap()),
+    body: json.encode(updatedTodo.toMap('change')),
   );
-  print(response.statusCode);
+  print("${response.statusCode}: ${response.body}");
 
-  if (response.statusCode == 200) {
-    return response;
-  } else {
-    throw Exception('Get request failed');
-  }
+  return updatedTodo;
+}
+
+Future addTodo(Todo todo) async {
+  final response = await http.post(
+    'http://117.193.68.204:8000/add/todo/123456',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+      "Accept": "application/json",
+    },
+    body: json.encode(todo.toMap('add')),
+  );
+  print("${response.statusCode}: ${response.body}");
 }

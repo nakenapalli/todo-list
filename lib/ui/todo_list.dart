@@ -3,6 +3,8 @@ import 'package:todo_list/api/todo_api.dart' as api;
 import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:todo_list/ui/new_todo.dart';
 
 class TodoList extends StatefulWidget {
   TodoList({Key key}) : super(key: key);
@@ -19,7 +21,7 @@ class _TodoListState extends State<TodoList> {
     await api.fetchTodoList().then((response) => setState(() {
           var data = json.decode(response.body);
           Iterable list = data as List;
-          // todoList = list.map((model) => Todo.fromJson(model)).toList();
+
           todoList.clear();
 
           list.forEach((element) {
@@ -40,10 +42,23 @@ class _TodoListState extends State<TodoList> {
 
   Widget isCompleted(bool completed) {
     if (completed) {
-      return Text("complete");
+      return Text(
+        "complete",
+        style: GoogleFonts.poppins(fontSize: 10),
+      );
     } else {
-      return Text("incomplete");
+      return Text(
+        "incomplete",
+        style: GoogleFonts.poppins(fontSize: 10),
+      );
     }
+  }
+
+  void markTodo(Todo todo) async {
+    await api.markTodo(todo).then((updated) => setState(() {
+          int index = todoList.indexOf(todo);
+          todoList.replaceRange(index, index + 1, [updated]);
+        }));
   }
 
   Widget buildTodoItem(int index, List<Todo> todos) {
@@ -54,27 +69,80 @@ class _TodoListState extends State<TodoList> {
         side: BorderSide(color: Colors.indigoAccent),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: ListTile(
-        leading: Padding(
-          padding: EdgeInsets.only(top: 12, left: 5),
-          child: Text(
-            todos[index].id.toString(),
-            style: TextStyle(
-              color: Colors.indigoAccent,
-              fontWeight: FontWeight.w500,
+      child: Expanded(
+        child: ListTile(
+          leading: Padding(
+            padding: EdgeInsets.only(top: 12, left: 5),
+            child: Text(
+              todos[index].id.toString(),
+              style: GoogleFonts.poppins(
+                color: Colors.indigoAccent,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
-        ),
-        title: Text(todos[index].todo),
-        subtitle: isCompleted(todos[index].completed),
-        trailing: IconButton(
-          icon: Icon(
-            MdiIcons.checkBold,
-            color: Colors.indigoAccent,
+          title: Text(
+            todos[index].todo,
+            style: GoogleFonts.poppins(fontSize: 14),
           ),
-          onPressed: () => setState(() {
-            api.markTodo(todos[index]);
-          }),
+          subtitle: isCompleted(todos[index].completed),
+          trailing: Container(
+            padding: EdgeInsets.only(top: 5),
+            child: Row(
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    completed
+                        ? Expanded(
+                            child: Text(
+                              "Undo",
+                              style: GoogleFonts.poppins(fontSize: 8),
+                              overflow: TextOverflow.visible,
+                            ),
+                          )
+                        : Expanded(
+                            child: Text(
+                              "Mark done",
+                              style: GoogleFonts.poppins(fontSize: 8),
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                    IconButton(
+                      icon: Icon(
+                        completed
+                            ? MdiIcons.undoVariant
+                            : MdiIcons.checkboxMarkedCircleOutline,
+                        color: Colors.indigoAccent,
+                      ),
+                      iconSize: 30,
+                      splashColor: Colors.indigoAccent[700],
+                      onPressed: () => markTodo(todos[index]),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        "Delete",
+                        style: GoogleFonts.poppins(fontSize: 8),
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        MdiIcons.delete,
+                        color: Colors.indigoAccent,
+                      ),
+                      iconSize: 30,
+                      splashColor: Colors.indigoAccent[700],
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -90,7 +158,9 @@ class _TodoListState extends State<TodoList> {
     }
 
     return List.generate(
-        currentList.length, (index) => buildTodoItem(index, currentList));
+      currentList.length,
+      (index) => buildTodoItem(index, currentList),
+    );
   }
 
   @override
@@ -98,7 +168,7 @@ class _TodoListState extends State<TodoList> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(MdiIcons.clipboardListOutline, color: Colors.white),
-        title: Text("Todo List"),
+        title: Text("Todo List", style: GoogleFonts.poppins()),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -119,6 +189,15 @@ class _TodoListState extends State<TodoList> {
       body: ListView(
         padding: EdgeInsets.all(5),
         children: createTodoList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(MdiIcons.plus),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NewTodo()),
+        ).then((value) => setState(() {
+              todoList.add(value);
+            })),
       ),
     );
   }

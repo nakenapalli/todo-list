@@ -13,11 +13,32 @@ class Todo {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'todo': todo,
-      'completed': completed,
-    };
+  Map<String, dynamic> toMap(String function) {
+    switch (function) {
+      case 'change':
+        {
+          return {
+            'id': id,
+            'completed': completed,
+          };
+        }
+        break;
+
+      case 'add':
+        {
+          return {
+            'completed': false,
+            'todo': todo,
+          };
+        }
+        break;
+
+      default:
+        {
+          print("Invalid function");
+          return null;
+        }
+        break;
+    }
   }
 }
