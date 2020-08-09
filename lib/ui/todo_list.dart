@@ -69,79 +69,76 @@ class _TodoListState extends State<TodoList> {
         side: BorderSide(color: Colors.indigoAccent),
         borderRadius: BorderRadius.circular(5),
       ),
-      child: Expanded(
-        child: ListTile(
-          leading: Padding(
-            padding: EdgeInsets.only(top: 12, left: 5),
-            child: Text(
-              todos[index].id.toString(),
-              style: GoogleFonts.poppins(
-                color: Colors.indigoAccent,
-                fontWeight: FontWeight.w500,
+      child: ListTile(
+        leading: Padding(
+          padding: EdgeInsets.only(top: 12, left: 5),
+          child: Text(
+            todos[index].id.toString(),
+            style: GoogleFonts.poppins(
+              color: Colors.indigoAccent,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        title: Text(
+          todos[index].todo,
+          style: GoogleFonts.poppins(fontSize: 14),
+        ),
+        subtitle: isCompleted(todos[index].completed),
+        trailing: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1),
+          ),
+          width: 100,
+          height: 60,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  completed
+                      ? Text(
+                          "Undo",
+                          style: GoogleFonts.poppins(fontSize: 8),
+                          overflow: TextOverflow.visible,
+                        )
+                      : Text(
+                          "Mark done",
+                          style: GoogleFonts.poppins(fontSize: 8),
+                          overflow: TextOverflow.visible,
+                        ),
+                  FlatButton(
+                    child: Icon(
+                      completed
+                          ? MdiIcons.undoVariant
+                          : MdiIcons.checkboxMarkedCircleOutline,
+                      color: Colors.indigoAccent,
+                      size: 25,
+                    ),
+                    splashColor: Colors.indigoAccent[700],
+                    onPressed: () => markTodo(todos[index]),
+                  ),
+                ],
               ),
-            ),
-          ),
-          title: Text(
-            todos[index].todo,
-            style: GoogleFonts.poppins(fontSize: 14),
-          ),
-          subtitle: isCompleted(todos[index].completed),
-          trailing: Container(
-            padding: EdgeInsets.only(top: 5),
-            child: Row(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    completed
-                        ? Expanded(
-                            child: Text(
-                              "Undo",
-                              style: GoogleFonts.poppins(fontSize: 8),
-                              overflow: TextOverflow.visible,
-                            ),
-                          )
-                        : Expanded(
-                            child: Text(
-                              "Mark done",
-                              style: GoogleFonts.poppins(fontSize: 8),
-                              overflow: TextOverflow.visible,
-                            ),
-                          ),
-                    IconButton(
-                      icon: Icon(
-                        completed
-                            ? MdiIcons.undoVariant
-                            : MdiIcons.checkboxMarkedCircleOutline,
-                        color: Colors.indigoAccent,
-                      ),
-                      iconSize: 30,
-                      splashColor: Colors.indigoAccent[700],
-                      onPressed: () => markTodo(todos[index]),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        "Delete",
-                        style: GoogleFonts.poppins(fontSize: 8),
-                        overflow: TextOverflow.visible,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        MdiIcons.delete,
-                        color: Colors.indigoAccent,
-                      ),
-                      iconSize: 30,
-                      splashColor: Colors.indigoAccent[700],
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              // Column(
+              //   children: <Widget>[
+              //     Text(
+              //       "Delete",
+              //       style: GoogleFonts.poppins(fontSize: 8),
+              //       overflow: TextOverflow.visible,
+              //     ),
+              //     IconButton(
+              //       icon: Icon(
+              //         MdiIcons.delete,
+              //         color: Colors.indigoAccent,
+              //       ),
+              //       iconSize: 25,
+              //       splashColor: Colors.indigoAccent[700],
+              //       onPressed: () {},
+              //     ),
+              //   ],
+              // ),
+            ],
           ),
         ),
       ),
