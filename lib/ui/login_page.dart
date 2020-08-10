@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import "package:validators/validators.dart";
 import "package:todo_list/api/todo_api.dart" as api;
 import 'package:todo_list/ui/todo_list.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -47,13 +48,24 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           padding: EdgeInsets.only(top: 150, left: 10, right: 10),
           children: <Widget>[
-            Text(
-              "Todo List",
-              style: GoogleFonts.poppins(
-                fontSize: 50,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  MdiIcons.formatListChecks,
+                  size: 40,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "Todo List",
+                  style: GoogleFonts.poppins(
+                    fontSize: 50,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
             SizedBox(height: 80),
             Container(

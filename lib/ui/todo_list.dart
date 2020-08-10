@@ -43,12 +43,12 @@ class _TodoListState extends State<TodoList> {
   Widget isCompleted(bool completed) {
     if (completed) {
       return Text(
-        "complete",
+        "Complete",
         style: GoogleFonts.poppins(fontSize: 10),
       );
     } else {
       return Text(
-        "incomplete",
+        "Incomplete",
         style: GoogleFonts.poppins(fontSize: 10),
       );
     }
@@ -124,6 +124,11 @@ class _TodoListState extends State<TodoList> {
                   ),
                 ],
               ),
+              /**
+               * Not sure how to include this second button in the container
+               * without causing overflow
+               * Want to keep the Row items close together
+               */
               // Column(
               //   children: <Widget>[
               //     Text(
@@ -132,7 +137,7 @@ class _TodoListState extends State<TodoList> {
               //       overflow: TextOverflow.visible,
               //     ),
               //     SizedBox(
-              //       height: 20,
+              //       height: 30,
               //       child: FlatButton(
               //         child: Icon(
               //           MdiIcons.delete,
@@ -171,10 +176,10 @@ class _TodoListState extends State<TodoList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(MdiIcons.clipboardListOutline, color: Colors.white),
+        leading: Icon(MdiIcons.formatListChecks, color: Colors.white),
         title: Text(
           "Todo List",
-          style: GoogleFonts.poppins(fontSize: 26),
+          style: GoogleFonts.poppins(fontSize: 30),
         ),
         actions: <Widget>[
           IconButton(
@@ -208,7 +213,7 @@ class _TodoListState extends State<TodoList> {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 40),
         children: createTodoList(),
       ),
       floatingActionButton: Container(
@@ -217,8 +222,8 @@ class _TodoListState extends State<TodoList> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
           child: Text(
-            "Log Out",
-            style: GoogleFonts.poppins(),
+            "Logout",
+            style: GoogleFonts.poppins(fontSize: 20),
           ),
           onPressed: () => Navigator.pop(context),
         ),

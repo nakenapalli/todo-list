@@ -29,7 +29,7 @@ Future markTodo(Todo todo) async {
   final response = await http.post(
     'http://$ip:$port/change/todo/$accessCode',
     headers: {
-      "Content-type": "application/x-www-form-urlencoded",
+      "Content-type": "application/json",
       "Accept": "application/json",
     },
     body: json.encode(updatedTodo.toMap('change')),
@@ -43,7 +43,7 @@ Future addTodo(Todo todo) async {
   final response = await http.post(
     'http://$ip:$port/add/todo/$accessCode',
     headers: {
-      "Content-type": "application/x-www-form-urlencoded",
+      "Content-type": "application/json",
       "Accept": "application/json",
     },
     body: json.encode(todo.toMap('add')),
@@ -55,13 +55,13 @@ Future login(String email, String password) async {
   final response = await http.post(
     'http://$ip:$port/login',
     headers: {
-      "Content-type": "application/x-www-form-urlencoded",
+      "Content-type": "application/json",
       "Accept": "application/json",
     },
-    body: {
+    body: json.encode({
       "email": email,
       "password": password,
-    },
+    }),
   );
   print("${response.statusCode}: ${response.body}");
 }
