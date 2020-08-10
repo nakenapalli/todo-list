@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/ui/todo_list.dart';
+import 'package:todo_list/ui/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: TodoList(),
+      home: LoginPage(),
     );
   }
 }

@@ -24,6 +24,7 @@ class _NewTodoState extends State<NewTodo> {
         title: Text("Create a new todo"),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(
@@ -31,6 +32,7 @@ class _NewTodoState extends State<NewTodo> {
             ),
             controller: _todoController,
           ),
+          SizedBox(height: 25),
           RaisedButton(
             child: Text("Save"),
             onPressed: () => saveTodo(Todo(todo: _todoController.text)),

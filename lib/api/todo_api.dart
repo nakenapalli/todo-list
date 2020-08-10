@@ -3,7 +3,7 @@ import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 
 final String ip = "117.193.65.95";
-final int port = 8080;
+final int port = 10001;
 final int accessCode = 123456;
 
 Future fetchTodoList() async {
@@ -47,6 +47,21 @@ Future addTodo(Todo todo) async {
       "Accept": "application/json",
     },
     body: json.encode(todo.toMap('add')),
+  );
+  print("${response.statusCode}: ${response.body}");
+}
+
+Future login(String email, String password) async {
+  final response = await http.post(
+    'http://$ip:$port/login',
+    headers: {
+      "Content-type": "application/x-www-form-urlencoded",
+      "Accept": "application/json",
+    },
+    body: {
+      "email": email,
+      "password": password,
+    },
   );
   print("${response.statusCode}: ${response.body}");
 }

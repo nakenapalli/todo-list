@@ -172,7 +172,10 @@ class _TodoListState extends State<TodoList> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(MdiIcons.clipboardListOutline, color: Colors.white),
-        title: Text("Todo List", style: GoogleFonts.poppins()),
+        title: Text(
+          "Todo List",
+          style: GoogleFonts.poppins(fontSize: 26),
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -208,6 +211,19 @@ class _TodoListState extends State<TodoList> {
         padding: EdgeInsets.all(5),
         children: createTodoList(),
       ),
+      floatingActionButton: Container(
+        width: 150,
+        child: FloatingActionButton(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          child: Text(
+            "Log Out",
+            style: GoogleFonts.poppins(),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
