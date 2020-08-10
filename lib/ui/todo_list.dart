@@ -70,8 +70,9 @@ class _TodoListState extends State<TodoList> {
         borderRadius: BorderRadius.circular(5),
       ),
       child: ListTile(
+        contentPadding: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
         leading: Padding(
-          padding: EdgeInsets.only(top: 12, left: 5),
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           child: Text(
             todos[index].id.toString(),
             style: GoogleFonts.poppins(
@@ -82,19 +83,19 @@ class _TodoListState extends State<TodoList> {
         ),
         title: Text(
           todos[index].todo,
-          style: GoogleFonts.poppins(fontSize: 14),
+          style: GoogleFonts.poppins(fontSize: 13, height: 1.2),
         ),
         subtitle: isCompleted(todos[index].completed),
         trailing: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1),
-          ),
+          // decoration: BoxDecoration(
+          //   border: Border.all(color: Colors.black, width: 1),
+          // ),
           width: 100,
-          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   completed
                       ? Text(
@@ -107,16 +108,19 @@ class _TodoListState extends State<TodoList> {
                           style: GoogleFonts.poppins(fontSize: 8),
                           overflow: TextOverflow.visible,
                         ),
-                  FlatButton(
-                    child: Icon(
-                      completed
-                          ? MdiIcons.undoVariant
-                          : MdiIcons.checkboxMarkedCircleOutline,
-                      color: Colors.indigoAccent,
-                      size: 25,
+                  SizedBox(
+                    height: 30,
+                    child: FlatButton(
+                      child: Icon(
+                        completed
+                            ? MdiIcons.undoVariant
+                            : MdiIcons.checkboxMarkedCircleOutline,
+                        color: Colors.indigoAccent,
+                        size: 25,
+                      ),
+                      splashColor: Colors.indigoAccent[700],
+                      onPressed: () => markTodo(todos[index]),
                     ),
-                    splashColor: Colors.indigoAccent[700],
-                    onPressed: () => markTodo(todos[index]),
                   ),
                 ],
               ),
@@ -127,14 +131,17 @@ class _TodoListState extends State<TodoList> {
               //       style: GoogleFonts.poppins(fontSize: 8),
               //       overflow: TextOverflow.visible,
               //     ),
-              //     IconButton(
-              //       icon: Icon(
-              //         MdiIcons.delete,
-              //         color: Colors.indigoAccent,
+              //     SizedBox(
+              //       height: 20,
+              //       child: FlatButton(
+              //         child: Icon(
+              //           MdiIcons.delete,
+              //           color: Colors.indigoAccent,
+              //           size: 25,
+              //         ),
+              //         splashColor: Colors.indigoAccent[700],
+              //         onPressed: () {},
               //       ),
-              //       iconSize: 25,
-              //       splashColor: Colors.indigoAccent[700],
-              //       onPressed: () {},
               //     ),
               //   ],
               // ),
@@ -180,21 +187,26 @@ class _TodoListState extends State<TodoList> {
             },
             splashColor: Colors.indigo[300],
           ),
+          IconButton(
+            icon: Icon(
+              MdiIcons.plusBoxOutline,
+              color: Colors.white,
+              size: 40,
+            ),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => NewTodo()),
+            ).then((value) => setState(() {
+                  initState();
+                })),
+            splashColor: Colors.indigo[300],
+          ),
           SizedBox(width: 10),
         ],
       ),
       body: ListView(
         padding: EdgeInsets.all(5),
         children: createTodoList(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(MdiIcons.plus),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => NewTodo()),
-        ).then((value) => setState(() {
-              todoList.add(value);
-            })),
       ),
     );
   }

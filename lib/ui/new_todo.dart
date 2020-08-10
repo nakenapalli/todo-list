@@ -14,7 +14,7 @@ class _NewTodoState extends State<NewTodo> {
 
   void saveTodo(Todo newTodo) async {
     await api.addTodo(newTodo);
-    Navigator.pop(context, newTodo);
+    Navigator.pop(context);
   }
 
   @override
@@ -32,6 +32,7 @@ class _NewTodoState extends State<NewTodo> {
             controller: _todoController,
           ),
           RaisedButton(
+            child: Text("Save"),
             onPressed: () => saveTodo(Todo(todo: _todoController.text)),
           ),
         ],

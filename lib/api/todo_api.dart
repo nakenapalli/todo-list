@@ -2,9 +2,13 @@ import 'package:http/http.dart' as http;
 import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 
+final String ip = "117.193.65.95";
+final int port = 8080;
+final int accessCode = 123456;
+
 Future fetchTodoList() async {
   final response = await http.get(
-    'http://117.193.68.204:8000/get/todo/123456',
+    'http://$ip:$port/get/todo/$accessCode',
     headers: {"Accept": "application/json"},
   );
 
@@ -23,7 +27,7 @@ Future markTodo(Todo todo) async {
   );
 
   final response = await http.post(
-    'http://117.193.68.204:8000/change/todo/123456',
+    'http://$ip:$port/change/todo/$accessCode',
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
       "Accept": "application/json",
@@ -37,7 +41,7 @@ Future markTodo(Todo todo) async {
 
 Future addTodo(Todo todo) async {
   final response = await http.post(
-    'http://117.193.68.204:8000/add/todo/123456',
+    'http://$ip:$port/add/todo/$accessCode',
     headers: {
       "Content-type": "application/x-www-form-urlencoded",
       "Accept": "application/json",
