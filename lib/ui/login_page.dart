@@ -14,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String _email;
   String _password;
 
@@ -22,7 +23,9 @@ class _LoginPageState extends State<LoginPage> {
       _formKey.currentState.save();
 
       try {
-        await api.login(_email, _password);
+        await api.login(_email, _password).then((value) {
+          api.accessCode = value;
+        });
 
         Navigator.push(
             context,
@@ -34,7 +37,11 @@ class _LoginPageState extends State<LoginPage> {
           });
         });
       } catch (e) {
-        print("Login failed: $e");
+        print("Error: $e");
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: new Text("Error: $e", style: GoogleFonts.poppins()),
+          duration: new Duration(seconds: 10),
+        ));
       }
     }
   }
@@ -42,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.indigoAccent[700],
       body: Form(
         key: _formKey,

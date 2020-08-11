@@ -2,11 +2,13 @@ import 'package:http/http.dart' as http;
 import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 
-final String ip = "117.193.65.95";
-final int port = 10001;
-final int accessCode = 123456;
+final String ip = "117.193.65.191";
+final String port = "10002";
+String accessCode = "123456";
 
 Future fetchTodoList() async {
+  print("Access code: $accessCode");
+
   final response = await http.get(
     'http://$ip:$port/get/todo/$accessCode',
     headers: {"Accept": "application/json"},
@@ -20,6 +22,8 @@ Future fetchTodoList() async {
 }
 
 Future markTodo(Todo todo) async {
+  print("Access code: $accessCode");
+
   Todo updatedTodo = Todo(
     id: todo.id,
     todo: todo.todo,
@@ -40,6 +44,8 @@ Future markTodo(Todo todo) async {
 }
 
 Future addTodo(Todo todo) async {
+  print("Access code: $accessCode");
+
   final response = await http.post(
     'http://$ip:$port/add/todo/$accessCode',
     headers: {
@@ -64,4 +70,11 @@ Future login(String email, String password) async {
     }),
   );
   print("${response.statusCode}: ${response.body}");
+
+  var data = json.decode(response.body);
+  if (data.containsKey("error_message")) {
+    throw "Login unauthorized";
+  } else {
+    return data["token"];
+  }
 }
