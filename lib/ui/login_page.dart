@@ -109,6 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    obscureText: true,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       color: Colors.white,
