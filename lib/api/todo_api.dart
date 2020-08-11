@@ -1,16 +1,18 @@
 import 'package:http/http.dart' as http;
 import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
+import 'package:todo_list/utils/data_storage.dart';
 
-final String ip = "117.193.65.191";
-final String port = "10002";
-String accessCode = "123456";
+final String _ip = "117.193.65.191";
+final String _port = "10002";
+DataStorage _storage = DataStorage();
 
 Future fetchTodoList() async {
+  String accessCode = await _storage.getAccessCode();
   print("Access code: $accessCode");
 
   final response = await http.get(
-    'http://$ip:$port/get/todo/$accessCode',
+    'http://$_ip:$_port/get/todo/$accessCode',
     headers: {"Accept": "application/json"},
   );
 
@@ -22,6 +24,7 @@ Future fetchTodoList() async {
 }
 
 Future markTodo(Todo todo) async {
+  String accessCode = await _storage.getAccessCode();
   print("Access code: $accessCode");
 
   Todo updatedTodo = Todo(
@@ -31,7 +34,7 @@ Future markTodo(Todo todo) async {
   );
 
   final response = await http.post(
-    'http://$ip:$port/change/todo/$accessCode',
+    'http://$_ip:$_port/change/todo/$accessCode',
     headers: {
       "Content-type": "application/json",
       "Accept": "application/json",
@@ -44,10 +47,11 @@ Future markTodo(Todo todo) async {
 }
 
 Future addTodo(Todo todo) async {
+  String accessCode = await _storage.getAccessCode();
   print("Access code: $accessCode");
 
   final response = await http.post(
-    'http://$ip:$port/add/todo/$accessCode',
+    'http://$_ip:$_port/add/todo/$accessCode',
     headers: {
       "Content-type": "application/json",
       "Accept": "application/json",
@@ -59,7 +63,7 @@ Future addTodo(Todo todo) async {
 
 Future login(String email, String password) async {
   final response = await http.post(
-    'http://$ip:$port/login',
+    'http://$_ip:$_port/login',
     headers: {
       "Content-type": "application/json",
       "Accept": "application/json",
@@ -75,6 +79,6 @@ Future login(String email, String password) async {
   if (data.containsKey("error_message")) {
     throw "Login unauthorized";
   } else {
-    return data["token"];
+    _storage.storeAccessCode(data['token']);
   }
 }

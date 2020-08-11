@@ -19,21 +19,21 @@ class _LoginPageState extends State<LoginPage> {
   String _password;
 
   void login() async {
+    FocusScope.of(context).unfocus();
+
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
       try {
         await api.login(_email, _password).then((value) {
-          api.accessCode = value;
-        });
-
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => TodoList(),
-            )).then((value) {
-          setState(() {
-            _formKey.currentState.reset();
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TodoList(),
+              )).then((value) {
+            setState(() {
+              _formKey.currentState.reset();
+            });
           });
         });
       } catch (e) {
