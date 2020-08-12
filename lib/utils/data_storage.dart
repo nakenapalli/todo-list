@@ -8,6 +8,8 @@ class DataStorage {
   }
 
   Future<String> getAccessCode() async {
-    return await _storage.read(key: 'token');
+    String code = await _storage.read(key: 'token');
+    print("Fetched secure access code: $code");
+    return code;
   }
 }

@@ -3,13 +3,12 @@ import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 import 'package:todo_list/utils/data_storage.dart';
 
-final String _ip = "117.193.65.191";
+final String _ip = "117.193.71.237";
 final String _port = "10002";
 DataStorage _storage = DataStorage();
 
 Future fetchTodoList() async {
   String accessCode = await _storage.getAccessCode();
-  print("Access code: $accessCode");
 
   final response = await http.get(
     'http://$_ip:$_port/get/todo/$accessCode',
@@ -25,7 +24,6 @@ Future fetchTodoList() async {
 
 Future markTodo(Todo todo) async {
   String accessCode = await _storage.getAccessCode();
-  print("Access code: $accessCode");
 
   Todo updatedTodo = Todo(
     id: todo.id,
@@ -48,7 +46,6 @@ Future markTodo(Todo todo) async {
 
 Future addTodo(Todo todo) async {
   String accessCode = await _storage.getAccessCode();
-  print("Access code: $accessCode");
 
   final response = await http.post(
     'http://$_ip:$_port/add/todo/$accessCode',

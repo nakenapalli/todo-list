@@ -205,7 +205,7 @@ class _TodoListState extends State<TodoList> {
               context,
               MaterialPageRoute(builder: (context) => NewTodo()),
             ).then((value) => setState(() {
-                  initState();
+                  _getTodos();
                 })),
             splashColor: Colors.indigo[300],
           ),
