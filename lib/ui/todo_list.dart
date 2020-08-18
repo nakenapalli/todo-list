@@ -4,7 +4,6 @@ import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:todo_list/ui/new_todo.dart';
 
 class TodoList extends StatefulWidget {
   TodoList({Key key}) : super(key: key);
@@ -113,8 +112,8 @@ class _TodoListState extends State<TodoList> {
                     child: FlatButton(
                       child: Icon(
                         completed
-                            ? MdiIcons.undoVariant
-                            : MdiIcons.checkboxMarkedCircleOutline,
+                            ? MdiIcons.checkboxMarkedCircleOutline
+                            : MdiIcons.checkboxBlankCircleOutline,
                         color: Colors.indigoAccent,
                         size: 25,
                       ),
@@ -172,6 +171,33 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
+  showAlertDialog(BuildContext context) {
+    Widget yesButton = FlatButton(
+      child: Text("YES"),
+      onPressed: () => Navigator.pushNamed(context, '/'),
+    );
+    Widget noButton = FlatButton(
+      child: Text("NO"),
+      onPressed: () => Navigator.pop(context),
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: Text("Logout"),
+      content: Text("Are you sure you want to log out?"),
+      actions: [
+        yesButton,
+        noButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,11 +208,19 @@ class _TodoListState extends State<TodoList> {
           style: GoogleFonts.poppins(fontSize: 30),
         ),
         actions: <Widget>[
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Text("View", style: GoogleFonts.poppins(fontSize: 8)),
+          //     SizedBox(
+          //       width: 80,
+          //       height: 30,
+          //       child:
           IconButton(
             icon: Icon(
               completed ? MdiIcons.checkboxMarked : MdiIcons.checkBoxOutline,
               color: Colors.white,
-              size: 40,
+              size: 35,
             ),
             onPressed: () => {
               setState(() {
@@ -195,20 +229,54 @@ class _TodoListState extends State<TodoList> {
             },
             splashColor: Colors.indigo[300],
           ),
+          //     ),
+          //   ],
+          // ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Text("Add", style: GoogleFonts.poppins(fontSize: 8)),
+          //     SizedBox(
+          //       width: 80,
+          //       height: 30,
+          //       child:
           IconButton(
             icon: Icon(
               MdiIcons.plusBoxOutline,
               color: Colors.white,
-              size: 40,
+              size: 35,
             ),
-            onPressed: () => Navigator.push(
+            onPressed: () => Navigator.pushNamed(
               context,
-              MaterialPageRoute(builder: (context) => NewTodo()),
+              '/new',
             ).then((value) => setState(() {
                   _getTodos();
                 })),
             splashColor: Colors.indigo[300],
           ),
+          //     ),
+          //   ],
+          // ),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Text("Logout", style: GoogleFonts.poppins(fontSize: 8)),
+          //     SizedBox(
+          //       width: 80,
+          //       height: 30,
+          //       child:
+          IconButton(
+            icon: Icon(
+              MdiIcons.logoutVariant,
+              color: Colors.white,
+              size: 35,
+            ),
+            onPressed: () => showAlertDialog(context),
+            splashColor: Colors.indigo[300],
+          ),
+          //     ),
+          //   ],
+          // ),
           SizedBox(width: 10),
         ],
       ),
@@ -216,19 +284,6 @@ class _TodoListState extends State<TodoList> {
         padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 40),
         children: createTodoList(),
       ),
-      floatingActionButton: Container(
-        width: 150,
-        child: FloatingActionButton(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          child: Text(
-            "Logout",
-            style: GoogleFonts.poppins(fontSize: 20),
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

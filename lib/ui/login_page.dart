@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import "package:validators/validators.dart";
 import "package:todo_list/api/todo_api.dart" as api;
-import 'package:todo_list/ui/todo_list.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,20 +21,14 @@ class _LoginPageState extends State<LoginPage> {
     FocusScope.of(context).unfocus();
 
     if (_formKey.currentState.validate()) {
+      print("Forms are valid");
       _formKey.currentState.save();
 
       try {
-        await api.login(_email, _password).then((value) {
-          Navigator.push(
+        await api.login(_email, _password).then((value) => Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                builder: (context) => TodoList(),
-              )).then((value) {
-            setState(() {
-              _formKey.currentState.reset();
-            });
-          });
-        });
+              '/list',
+            ));
       } catch (e) {
         print("Error: $e");
         _scaffoldKey.currentState.showSnackBar(SnackBar(

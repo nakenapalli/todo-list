@@ -3,8 +3,8 @@ import 'package:todo_list/models/todo_model.dart';
 import 'dart:convert';
 import 'package:todo_list/utils/data_storage.dart';
 
-final String _ip = "117.193.71.237";
-final String _port = "10002";
+final String _ip = "13.233.250.194";
+final String _port = "8080";
 DataStorage _storage = DataStorage();
 
 Future fetchTodoList() async {
